@@ -18,7 +18,7 @@ disable=raw-checker-failed,
         missing-class-docstring
 
 [FORMAT]
-max-line-lenght=80
+max-line-length=80
 indent-string='    '
 [REFACTORING]
 max-nested-blocks=2
