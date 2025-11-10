@@ -28,6 +28,6 @@ class Varasto:
 
     def __str__(self):
         return (
-            f"saldo = {self.saldo}, "
-            f"vielä tilaa {self.paljonko_mahtuu()}"
+            f"saldo = {int(self.saldo)}, "
+            f"vielä tilaa {int(self.paljonko_mahtuu())}"
         )
