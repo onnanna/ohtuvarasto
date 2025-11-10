@@ -1,45 +1,33 @@
 class Varasto:
-    def __init__(self, tilavuus, alku_saldo = 0):
-        if tilavuus > 0.0:
-            self.tilavuus = tilavuus
-        else:
-            # virheellinen, nollataan
-            self.tilavuus = 0.0
 
-        if alku_saldo < 0.0:
-            # virheellinen, nollataan
-            self.saldo = 0.0
-        elif alku_saldo <= tilavuus:
-            # mahtuu
-            self.saldo = alku_saldo
-        else:
-            # täyteen ja ylimäärä hukkaan!
-            self.saldo = tilavuus
+    def __init__(self, tilavuus, alku_saldo=0.0):
+        self.tilavuus = tilavuus if tilavuus > 0 else 0.0
+        self.saldo = self._alkusaldo(alku_saldo)
 
-    # huom: ominaisuus voidaan myös laskea. Ei tarvita erillistä kenttää viela_tilaa tms.
+    def _alkusaldo(self, alku_saldo):
+        if alku_saldo < 0:
+            return 0.0
+        if alku_saldo > self.tilavuus:
+            return self.tilavuus
+        return alku_saldo
+
     def paljonko_mahtuu(self):
         return self.tilavuus - self.saldo
 
     def lisaa_varastoon(self, maara):
         if maara < 0:
             return
-        if maara <= self.paljonko_mahtuu():
-            self.saldo = self.saldo + maara
-        else:
-            self.saldo = self.tilavuus
+        self.saldo = min(self.tilavuus, self.saldo + maara)
 
     def ota_varastosta(self, maara):
         if maara < 0:
             return 0.0
-        if maara > self.saldo:
-            kaikki_mita_voidaan = self.saldo
-            self.saldo = 0.0
-
-            return kaikki_mita_voidaan
-
-        self.saldo = self.saldo - maara
-
-        return maara
+        otettava = min(maara, self.saldo)
+        self.saldo -= otettava
+        return otettava
 
     def __str__(self):
-        return f"saldo = {self.saldo}, vielä tilaa {self.paljonko_mahtuu()}"
+        return (
+            f"saldo = {self.saldo}, "
+            f"vielä tilaa {self.paljonko_mahtuu()}"
+        )
