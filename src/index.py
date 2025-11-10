@@ -14,6 +14,5 @@ def main():
     olutta.lisaa_varastoon(1000.0)
     print(f"Olut täytetty yli\nOlutvarasto: {olutta}")
 
-
 if __name__ == "__main__":
     main()
