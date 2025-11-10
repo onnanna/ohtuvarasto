@@ -1,7 +1,7 @@
 class Varasto:
 
     def __init__(self, tilavuus, alku_saldo=0.0):
-        self.tilavuus = tilavuus if tilavuus > 0 else 0.0
+        self.tilavuus = max(tilavuus, 0.0)
         self.saldo = self._alkusaldo(alku_saldo)
 
     def _alkusaldo(self, alku_saldo):
