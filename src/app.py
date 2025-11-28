@@ -1,8 +1,9 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from varasto import Varasto
 
 app = Flask(__name__)
-app.secret_key = "dev_secret_key_change_in_production"
+app.secret_key = os.environ.get("SECRET_KEY", os.urandom(24))
 
 # In-memory storage for warehouses (dict of id -> {name, varasto})
 warehouses = {}
@@ -15,6 +16,13 @@ def get_next_id():
     current_id = next_id
     next_id += 1
     return current_id
+
+
+def reset_app_state():
+    """Reset the application state for testing purposes."""
+    global next_id
+    warehouses.clear()
+    next_id = 1
 
 
 @app.route("/")
@@ -157,4 +165,5 @@ def delete_warehouse(warehouse_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    debug_mode = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
+    app.run(debug=debug_mode, port=5000)

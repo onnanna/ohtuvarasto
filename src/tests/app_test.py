@@ -1,5 +1,5 @@
 import unittest
-from app import app, warehouses, get_next_id
+from app import app, warehouses, reset_app_state
 
 
 class TestWebApp(unittest.TestCase):
@@ -8,10 +8,7 @@ class TestWebApp(unittest.TestCase):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
         self.client = app.test_client()
-        warehouses.clear()
-        # Reset the id counter
-        import app as app_module
-        app_module.next_id = 1
+        reset_app_state()
 
     def test_index_empty(self):
         """Test index page with no warehouses."""
