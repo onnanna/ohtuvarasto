@@ -2,6 +2,7 @@
 
 ignore-paths=src/tests
 ignore=single_file_to_ignore.py
+fail-under=9.60
 
 [MESSAGE CONTROL]
 
