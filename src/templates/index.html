@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}All Warehouses - Warehouse Manager{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>All Warehouses</h2>
+    {% if warehouses %}
+        <div class="warehouse-list">
+            {% for id, warehouse in warehouses.items() %}
+                <div class="warehouse-item">
+                    <h3>{{ warehouse.name }}</h3>
+                    <div class="stats">
+                        <p><strong>Capacity:</strong> {{ warehouse.varasto.tilavuus }}</p>
+                        <p><strong>Current Balance:</strong> {{ warehouse.varasto.saldo }}</p>
+                        <p><strong>Available Space:</strong> {{ warehouse.varasto.paljonko_mahtuu() }}</p>
+                    </div>
+                    {% set fill_percent = (warehouse.varasto.saldo / warehouse.varasto.tilavuus * 100) if warehouse.varasto.tilavuus > 0 else 0 %}
+                    <div class="progress-bar">
+                        <div class="fill" style="width: {{ fill_percent }}%"></div>
+                    </div>
+                    <a href="{{ url_for('view_warehouse', warehouse_id=id) }}" class="btn btn-primary">Manage</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No warehouses yet. <a href="{{ url_for('create_warehouse') }}">Create one</a> to get started.</p>
+    {% endif %}
+</div>
+{% endblock %}
