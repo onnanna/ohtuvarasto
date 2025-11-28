@@ -120,6 +120,19 @@ class TestWebApp(unittest.TestCase):
         }, follow_redirects=True)
         self.assertIn(b'Amount must be greater than 0', response.data)
 
+    def test_add_to_full_warehouse(self):
+        """Test adding content to a full warehouse."""
+        self.client.post('/warehouse/new', data={
+            'name': 'Test',
+            'tilavuus': '100',
+            'alku_saldo': '100'
+        })
+        response = self.client.post('/warehouse/1/add', data={
+            'maara': '10'
+        }, follow_redirects=True)
+        self.assertIn(b'Warehouse is full', response.data)
+        self.assertAlmostEqual(warehouses[1]['varasto'].saldo, 100)
+
     def test_remove_from_warehouse(self):
         """Test removing content from warehouse."""
         self.client.post('/warehouse/new', data={

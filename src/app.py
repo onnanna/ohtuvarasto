@@ -97,6 +97,11 @@ def add_to_warehouse(warehouse_id):
         flash("Amount must be greater than 0.", "error")
         return redirect(url_for("view_warehouse", warehouse_id=warehouse_id))
 
+    available_space = warehouse["varasto"].paljonko_mahtuu()
+    if available_space <= 0:
+        flash("Warehouse is full. Cannot add more content.", "error")
+        return redirect(url_for("view_warehouse", warehouse_id=warehouse_id))
+
     warehouse["varasto"].lisaa_varastoon(maara)
     flash(f"Added {maara} units to warehouse.", "success")
     return redirect(url_for("view_warehouse", warehouse_id=warehouse_id))
